@@ -67,17 +67,26 @@ export default function CountrySearch (){
         fetchCountries();
       }, [])
 
-    const handleChange=(e)=>{
-        const search = e.target.value
-        setSearchTerm(search)
-        const filtered=countries.filter((country)=>
-            country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        setfilteredCountries(filtered)
-        if(!e.target.value){
-            setfilteredCountries(countries)
-        }
-    }
+    // const handleChange=(e)=>{
+    //     const search = e.target.value
+    //     setSearchTerm(search)
+    //     const filtered=countries.filter((country)=>
+    //         country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
+    //     )
+    //     setfilteredCountries(filtered)
+    //     if(!e.target.value){
+    //         setfilteredCountries(countries)
+    //     }
+    // }
+
+    const handleChange = (e) => {
+        const searchTerm = e.target.value;
+        setSearchTerm(searchTerm);
+        const filtered = countries.filter((country) =>
+          country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setfilteredCountries(filtered);
+      };
 
     return(
         <div>
