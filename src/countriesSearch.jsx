@@ -31,22 +31,41 @@ export default function CountrySearch (){
    const [countries,setcountries] = useState([]);
    const [filteredCountries,setfilteredCountries] = useState([]);
    const [searchTerm, setSearchTerm] = useState("");
+   const [error, setError] = useState(null);
 
-    const fetchData = async()=>{
-        try{
-            const response = await axios.get(API_URL);
+    // const fetchData = async()=>{
+    //     try{
+    //         const response = await axios.get(API_URL);
+     
+    //         return response.data
+    //     }catch (error){
+    //         setError(error.message);
+    //         console.error(error)
+    //     }
+    // }
+
+    // useEffect(()=>{
+    //     fetchData().then((data)=>{setcountries(data);setfilteredCountries(data)})
+    // },[])
+
+
+    useEffect(() => {
+        const fetchCountries = async () => {
+          try {
+            const response = await fetch("https://restcountries.com/v3.1/all");
             if (!response.ok) {
-                console.log("Failed to fetch countries");
-              }
-            return response.data
-        }catch (error){
-            console.error(error.message)
-        }
-    }
-
-    useEffect(()=>{
-        fetchData().then((data)=>{setcountries(data);setfilteredCountries(data)})
-    },[])
+              throw new Error("Failed to fetch countries");
+            }
+            const data = await response.json();
+            setcountries(data);
+            setfilteredCountries(data);
+          } catch (error) {
+            setError(error.message);
+            console.error(error);
+          }
+        };
+        fetchCountries();
+      }, [])
 
     const handleChange=(e)=>{
         const search = e.target.value
@@ -78,7 +97,7 @@ export default function CountrySearch (){
                 flexWrap:"wrap"
             }}>
 
-               {filteredCountries.length === 0 ? <p>"No countries found matching the search term."</p> :
+               {
                 filteredCountries.map((country)=>(
                     <CountryCard name= {country.name.common} flagImg={ country.flags.png} flagAltTxt={country.flags.alt} />
                 ))}
