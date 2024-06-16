@@ -35,9 +35,12 @@ export default function CountrySearch (){
     const fetchData = async()=>{
         try{
             const response = await axios.get(API_URL);
+            if (!response.ok) {
+                console.log("Failed to fetch countries");
+              }
             return response.data
         }catch (error){
-            console.log(error)
+            console.error(error.message)
         }
     }
 
